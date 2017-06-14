@@ -6,7 +6,7 @@
 
 * Creation Date : 01-09-2015
 
-* Last Modified : Wed 17 May 2017 11:15:50 PM UTC
+* Last Modified : Wed 14 Jun 2017 12:54:22 AM UTC
 
 * Created By : Kiyor
 
@@ -52,6 +52,7 @@ var (
 	showHeaders *string        = flag.String("headers", "", "show only headers, syntax -headers a,b")
 	worker      *int           = flag.Int("w", 2*runtime.NumCPU(), "worker")
 	xcache      *string        = flag.String("xcache", "Powered-By-Chinacache|X-Powered-By-Chinacache", "cache status possible headers")
+	jsonOut     *bool          = flag.Bool("json", false, "json output")
 	VER                        = "1.0"
 	buildtime   string
 

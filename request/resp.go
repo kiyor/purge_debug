@@ -6,7 +6,7 @@
 
 * Creation Date : 10-03-2016
 
-* Last Modified : Wed 14 Jun 2017 12:37:43 AM UTC
+* Last Modified : Wed 14 Jun 2017 01:42:21 AM UTC
 
 * Created By : Kiyor
 
@@ -18,6 +18,7 @@ import (
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
+	"github.com/kiyor/golib"
 	"github.com/kiyor/terminal/color"
 	"io/ioutil"
 	"log"
@@ -33,7 +34,10 @@ var (
 )
 
 func toJson(intf interface{}) string {
-	j, _ := json.Marshal(intf)
+	j, err := json.Marshal(intf)
+	if err != nil {
+		log.Println(err.Error())
+	}
 	return string(j)
 }
 
@@ -46,6 +50,15 @@ type Resp struct {
 }
 
 func (resp *Resp) output() {
+	if *jsonOut {
+		m := make(map[string]interface{})
+		m["Request"] = golib.CopyRequest(resp.Req)
+		m["Response"] = golib.CopyResponse(resp.Resp)
+		m["Error"] = resp.Err
+		m["Duration"] = resp.Dur.String()
+		fmt.Println(toJson(m))
+		return
+	}
 	if resp.Err == nil {
 		var msg string
 		var lastmodGood bool
