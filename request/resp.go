@@ -6,7 +6,7 @@
 
 * Creation Date : 10-03-2016
 
-* Last Modified : Wed 14 Jun 2017 01:42:21 AM UTC
+* Last Modified : Wed 14 Jun 2017 01:56:38 AM UTC
 
 * Created By : Kiyor
 
@@ -70,7 +70,6 @@ func (resp *Resp) output() {
 		}
 		if val, ok := resp.Resp.Header["Last-Modified"]; ok {
 			totalReq++
-			log.Println(val[0], "|", *expectLM, "|", val[0] == *expectLM)
 			if val[0] == *expectLM {
 				expectReq++
 				lastmodGood = true
