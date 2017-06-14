@@ -6,7 +6,7 @@
 
 * Creation Date : 10-03-2016
 
-* Last Modified : Wed 17 May 2017 11:13:57 PM UTC
+* Last Modified : Wed 14 Jun 2017 12:37:43 AM UTC
 
 * Created By : Kiyor
 
@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"github.com/kiyor/terminal/color"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"sort"
 	"strings"
@@ -47,6 +48,7 @@ type Resp struct {
 func (resp *Resp) output() {
 	if resp.Err == nil {
 		var msg string
+		var lastmodGood bool
 
 		if val, ok := resp.Resp.Header["Etag"]; ok {
 			if len(val[0]) > 6 {
@@ -55,8 +57,10 @@ func (resp *Resp) output() {
 		}
 		if val, ok := resp.Resp.Header["Last-Modified"]; ok {
 			totalReq++
+			log.Println(val[0], "|", *expectLM, "|", val[0] == *expectLM)
 			if val[0] == *expectLM {
 				expectReq++
+				lastmodGood = true
 				msg = color.Sprintf("%s @{g}LM: %s@{|}", msg, val[0])
 			} else {
 				msg = color.Sprintf("%s @{r}LM: %s@{|}", msg, val[0])
@@ -97,6 +101,11 @@ func (resp *Resp) output() {
 			msg += color.Sprintf(" @{y}%s@{|}", resp.Dur)
 		} else {
 			msg += color.Sprintf(" @{g}%s@{|}", resp.Dur)
+		}
+		if lastmodGood {
+			msg += " success"
+		} else {
+			msg += " fail"
 		}
 
 		var res string
